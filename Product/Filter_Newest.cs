@@ -41,7 +41,7 @@ namespace TindaPress.Product
             getRequest += "wpid=" + wp_id;
             getRequest += "&snky=" + session_key;
 
-            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/user/data" + getRequest);
+            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/product/newest" + getRequest);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

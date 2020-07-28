@@ -7,19 +7,19 @@ using TindaPress.Product.Struct;
 
 namespace TindaPress.Product
 {
-    public class Filter_Newest
+    public class STLF_Category
     {
         #region Fields
         /// <summary>
-        /// Instance of Filter Newest Product Class.
+        /// Instance of Store List Filter Newest Class.
         /// </summary>
-        private static Filter_Newest instance;
-        public static Filter_Newest Instance
+        private static STLF_Category instance;
+        public static STLF_Category Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new Filter_Newest();
+                    instance = new STLF_Category();
                 return instance;
             }
         }
@@ -29,7 +29,7 @@ namespace TindaPress.Product
         /// Web service for communication for our Backend.
         /// </summary>
         HttpClient client;
-        public Filter_Newest()
+        public STLF_Category()
         {
             client = new HttpClient();
         }
@@ -41,7 +41,7 @@ namespace TindaPress.Product
             getRequest += "wpid=" + wp_id;
             getRequest += "&snky=" + session_key;
 
-            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/product/newest" + getRequest);
+            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/store/newest" + getRequest);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

@@ -5,21 +5,21 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using TindaPress.Product.Struct;
 
-namespace TindaPress.Product
+namespace TindaPress.Category
 {
-    public class Filter_Category
+    class CatList_Stores
     {
         #region Fields
         /// <summary>
-        /// Instance of Filter Category Product Class.
+        /// Instance of Categories List of Stores Class.
         /// </summary>
-        private static Filter_Category instance;
-        public static Filter_Category Instance
+        private static CatList_Stores instance;
+        public static CatList_Stores Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new Filter_Category();
+                    instance = new CatList_Stores();
                 return instance;
             }
         }
@@ -29,21 +29,19 @@ namespace TindaPress.Product
         /// Web service for communication for our Backend.
         /// </summary>
         HttpClient client;
-        public Filter_Category()
+        public CatList_Stores()
         {
             client = new HttpClient();
         }
         #endregion
         #region Method
-        public async void GetData(string wp_id, string session_key, string store_id, string category_id, Action<bool, string> callback)
+        public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
         {
             string getRequest = "?";
             getRequest += "wpid=" + wp_id;
             getRequest += "&snky=" + session_key;
-            getRequest += "&stid=" + store_id;
-            getRequest += "&catid=" + category_id;
 
-            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/product/filter/category" + getRequest);
+            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/category/stores" + getRequest);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

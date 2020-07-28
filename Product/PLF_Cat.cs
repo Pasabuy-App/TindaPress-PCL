@@ -7,19 +7,19 @@ using TindaPress.Product.Struct;
 
 namespace TindaPress.Product
 {
-    public class STF_Category
+    public class PLF_Cat
     {
         #region Fields
         /// <summary>
-        /// Instance of Filter Newest Store Product Class.
+        /// Instance of Product List Filter Category Class.
         /// </summary>
-        private static STF_Category instance;
-        public static STF_Category Instance
+        private static PLF_Cat instance;
+        public static PLF_Cat Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new STF_Category();
+                    instance = new PLF_Cat();
                 return instance;
             }
         }
@@ -29,19 +29,21 @@ namespace TindaPress.Product
         /// Web service for communication for our Backend.
         /// </summary>
         HttpClient client;
-        public STF_Category()
+        public PLF_Cat()
         {
             client = new HttpClient();
         }
         #endregion
         #region Method
-        public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
+        public async void GetData(string wp_id, string session_key, string store_id, string category_id, Action<bool, string> callback)
         {
             string getRequest = "?";
             getRequest += "wpid=" + wp_id;
             getRequest += "&snky=" + session_key;
+            getRequest += "&stid=" + store_id;
+            getRequest += "&catid=" + category_id;
 
-            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/store/newest" + getRequest);
+            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/product/filter/category" + getRequest);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

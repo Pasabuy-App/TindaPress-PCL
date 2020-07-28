@@ -5,21 +5,21 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using TindaPress.Product.Struct;
 
-namespace TindaPress.Category
+namespace TindaPress.Product
 {
-    class Cat_List_Stores
+    public class ST_CatList
     {
         #region Fields
         /// <summary>
-        /// Instance of Categories List of Stores Class.
+        /// Instance of Store Category List Class.
         /// </summary>
-        private static Cat_List_Stores instance;
-        public static Cat_List_Stores Instance
+        private static ST_CatList instance;
+        public static ST_CatList Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new Cat_List_Stores();
+                    instance = new ST_CatList();
                 return instance;
             }
         }
@@ -29,7 +29,7 @@ namespace TindaPress.Category
         /// Web service for communication for our Backend.
         /// </summary>
         HttpClient client;
-        public Cat_List_Stores()
+        public ST_CatList()
         {
             client = new HttpClient();
         }
@@ -41,7 +41,7 @@ namespace TindaPress.Category
             getRequest += "wpid=" + wp_id;
             getRequest += "&snky=" + session_key;
 
-            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/ategory/stores" + getRequest);
+            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/stores/categories" + getRequest);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

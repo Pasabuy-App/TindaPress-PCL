@@ -7,41 +7,42 @@ using TindaPress.Product.Struct;
 
 namespace TindaPress.Product
 {
-    public class PLF_Newest
+    public class FilStore_New
     {
         #region Fields
         /// <summary>
-        /// Instance of Product List Filter Newest Class.
+        /// Instance of Store List Filter Newest Class.
         /// </summary>
-        private static PLF_Newest instance;
-        public static PLF_Newest Instance
+        private static FilStore_New instance;
+        public static FilStore_New Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new PLF_Newest();
+                    instance = new FilStore_New();
                 return instance;
             }
         }
         #endregion
         #region Constructor
         /// <summary>
-        /// Web service for communication for our Backend.
+        /// Web service for communication to our Backend.
         /// </summary>
         HttpClient client;
-        public PLF_Newest()
+        public FilStore_New()
         {
             client = new HttpClient();
         }
         #endregion
-        #region Method
+        #region Methods
         public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
         {
-            string getRequest = "?";
-            getRequest += "wpid=" + wp_id;
-            getRequest += "&snky=" + session_key;
+            var dict = new Dictionary<string, string>();
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+            var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/product/newest" + getRequest);
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/store/newest", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

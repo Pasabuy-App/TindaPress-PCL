@@ -7,43 +7,42 @@ using TindaPress.Product.Struct;
 
 namespace TindaPress.Product
 {
-    public class PLF_Cat
+    public class StoreCat_List
     {
         #region Fields
         /// <summary>
-        /// Instance of Product List Filter Category Class.
+        /// Instance of Store Category List Class.
         /// </summary>
-        private static PLF_Cat instance;
-        public static PLF_Cat Instance
+        private static StoreCat_List instance;
+        public static StoreCat_List Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new PLF_Cat();
+                    instance = new StoreCat_List();
                 return instance;
             }
         }
         #endregion
         #region Constructor
         /// <summary>
-        /// Web service for communication for our Backend.
+        /// Web service for communication to our Backend.
         /// </summary>
         HttpClient client;
-        public PLF_Cat()
+        public StoreCat_List()
         {
             client = new HttpClient();
         }
         #endregion
-        #region Method
-        public async void GetData(string wp_id, string session_key, string store_id, string category_id, Action<bool, string> callback)
+        #region Methodss
+        public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
         {
-            string getRequest = "?";
-            getRequest += "wpid=" + wp_id;
-            getRequest += "&snky=" + session_key;
-            getRequest += "&stid=" + store_id;
-            getRequest += "&catid=" + category_id;
+            var dict = new Dictionary<string, string>();
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+            var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/product/filter/category" + getRequest);
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/stores/categories", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

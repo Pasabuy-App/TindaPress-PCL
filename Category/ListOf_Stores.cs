@@ -5,31 +5,31 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using TindaPress.Product.Struct;
 
-namespace TindaPress.Product
+namespace TindaPress.Category
 {
-    public class ST_CatList
+    public class ListOf_Stores
     {
         #region Fields
         /// <summary>
-        /// Instance of Store Category List Class.
+        /// Instance of Categories List of Stores Class.
         /// </summary>
-        private static ST_CatList instance;
-        public static ST_CatList Instance
+        private static ListOf_Stores instance;
+        public static ListOf_Stores Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new ST_CatList();
+                    instance = new ListOf_Stores();
                 return instance;
             }
         }
         #endregion
         #region Constructor
         /// <summary>
-        /// Web service for communication for our Backend.
+        /// Web service for communication to our Backend.
         /// </summary>
         HttpClient client;
-        public ST_CatList()
+        public ListOf_Stores()
         {
             client = new HttpClient();
         }
@@ -37,11 +37,12 @@ namespace TindaPress.Product
         #region Method
         public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
         {
-            string getRequest = "?";
-            getRequest += "wpid=" + wp_id;
-            getRequest += "&snky=" + session_key;
+            var dict = new Dictionary<string, string>();
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+            var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/stores/categories" + getRequest);
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/category/stores", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

@@ -43,7 +43,7 @@ namespace TindaPress.Variants
                 dict.Add("pdid", product_id);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/variants/product/select", content);
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/variants/list", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

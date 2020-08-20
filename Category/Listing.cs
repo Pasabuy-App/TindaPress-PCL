@@ -7,19 +7,19 @@ using TindaPress.Product.Struct;
 
 namespace TindaPress.Category
 {
-    public class ListOf_Stores
+    public class Listing
     {
         #region Fields
         /// <summary>
-        /// Instance of Categories List of Stores Class.
+        /// Instance of Listing Categories of Active/Inactive of Product/Store Class.
         /// </summary>
-        private static ListOf_Stores instance;
-        public static ListOf_Stores Instance
+        private static Listing instance;
+        public static Listing Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new ListOf_Stores();
+                    instance = new Listing();
                 return instance;
             }
         }
@@ -29,20 +29,23 @@ namespace TindaPress.Category
         /// Web service for communication to our Backend.
         /// </summary>
         HttpClient client;
-        public ListOf_Stores()
+        public Listing()
         {
             client = new HttpClient();
         }
         #endregion
         #region Method
-        public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
+        public async void GetData(string wp_id, string session_key, string stid, string type, string status, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-                dict.Add("wpid", wp_id);
-                dict.Add("snky", session_key);
+            dict.Add("wpid", wp_id);
+            dict.Add("snky", session_key);
+            dict.Add("stid", stid);
+            dict.Add("type", type);
+            dict.Add("status", status);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/category/stores", content);
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/category/list", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

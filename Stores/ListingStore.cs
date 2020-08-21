@@ -35,13 +35,14 @@ namespace TindaPress.Stores
         }
         #endregion
         #region Methodss
-        public async void Listing(string wp_id, string session_key, string catid, string status, Action<bool, string> callback)
+        public async void Listing(string wp_id, string session_key, string catid, string stid, string status, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("status", status);
-            dict.Add("catid", catid);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("status", status);
+                dict.Add("stid", stid);
+                dict.Add("catid", catid);
             var content = new FormUrlEncodedContent(dict);
 
             var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/stores/list", content);

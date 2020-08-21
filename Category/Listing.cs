@@ -35,14 +35,18 @@ namespace TindaPress.Category
         }
         #endregion
         #region Method
-        public async void GetData(string wp_id, string session_key, string stid, string type, string status, Action<bool, string> callback)
+        public async void GetData(string wp_id, string session_key, string catid, string stid, string type, string status, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
             dict.Add("wpid", wp_id);
             dict.Add("snky", session_key);
+            dict.Add("catid", catid);
             dict.Add("stid", stid);
-            dict.Add("type", type);
             dict.Add("status", status);
+            if (type != "")
+            {
+                dict.Add("type", type);
+            }
             var content = new FormUrlEncodedContent(dict);
 
             var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/category/list", content);

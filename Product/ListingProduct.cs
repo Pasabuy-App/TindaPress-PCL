@@ -35,13 +35,14 @@ namespace TindaPress.Product
         }
         #endregion
         #region Methods
-        public async void Listing(string wp_id, string session_key, string stid, string catid, string status, Action<bool, string> callback)
+        public async void Listing(string wp_id, string session_key, string stid, string catid, string pid, string status, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
             dict.Add("wpid", wp_id);
             dict.Add("snky", session_key);
             dict.Add("stid", stid);
             dict.Add("catid", catid);
+            dict.Add("pid", pid);
             dict.Add("status", status);
             var content = new FormUrlEncodedContent(dict);
 

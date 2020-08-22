@@ -7,8 +7,47 @@ using TindaPress.Product.Struct;
 
 namespace TindaPress.Product
 {
+    public class Variants
+    {
+        public string name;
+        public string baseprice;
+        public Options[] options;
+
+    }
+    public class Options
+    {
+        public string name;
+        public string price;
+        public int order;
+
+    }
     public class FilProd_New
     {
+        public string Bars()
+        {
+            Options var1 = new Options();
+            Options var2 = new Options();
+            Options var3 = new Options();
+            Variants vars = new Variants();
+            vars.name = "name";
+            vars.baseprice = "baseprice";
+            //vars.options[0].name = "small";
+            //vars.options[1].name = "medium";
+            //vars.options[2].name = "large";
+            //vars.options[0].price = "50";
+            //vars.options[1].price = "100";
+            //vars.options[2].price = "150";
+            var1.name = "small";
+            var1.price = "50";
+            var2.name = "medium";
+            var2.price = "100";
+            var3.name = "large";
+            var3.price = "150";
+            vars.options = new Options[3] { var1, var2, var3};
+
+            string bbars = JsonConvert.SerializeObject(vars);
+            return bbars;
+        }
         #region Fields
         /// <summary>
         /// Instance of Product List Filter Newest Class.
@@ -32,27 +71,28 @@ namespace TindaPress.Product
         public FilProd_New()
         {
             client = new HttpClient();
+
         }
         #endregion
         #region Methods
-        public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
+        public async void GetData(string val1, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-                dict.Add("wpid", wp_id);
-                dict.Add("snky", session_key);
+                dict.Add("val1", val1);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/product/newest", content);
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/datavice/test/demoguy", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
             {
                 string result = await response.Content.ReadAsStringAsync();
-                Token token = JsonConvert.DeserializeObject<Token>(result);
+                callback(true, result);
+                //Token token = JsonConvert.DeserializeObject<Token>(result);
 
-                bool success = token.status == "success" ? true : false;
-                string data = token.status == "success" ? result : token.message;
-                callback(success, data);
+                //bool success = token.status == "success" ? true : false;
+                //string data = token.status == "success" ? result : token.message;
+                //callback(success, data);
             }
             else
             {

@@ -4,6 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Net.Http;
 using TindaPress.Product.Struct;
+using System.IO;
 
 namespace TindaPress.Documents
 {
@@ -35,15 +36,18 @@ namespace TindaPress.Documents
         }
         #endregion
         #region Methodss
-        public async void Insert(string wp_id, string session_key, string path, Action<bool, string> callback)
+        public async void Insert(string wp_id, string session_key, string stid, string doc_type, string img, Action<bool, string> callback)
         {
-            var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("path", path);
-            var content = new FormUrlEncodedContent(dict);
+            var multiForm = new MultipartFormDataContent();
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/order/total/sales", content);
+            multiForm.Add(new StringContent(wp_id), "wpid");
+            multiForm.Add(new StringContent(session_key), "snky");
+            multiForm.Add(new StringContent(stid), "stid");
+            multiForm.Add(new StringContent(doc_type), "doc_type");
+            FileStream fs = File.OpenRead(img);
+            multiForm.Add(new StreamContent(fs), "img", Path.GetFileName(img));
+
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/stores/documents/insert", multiForm);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

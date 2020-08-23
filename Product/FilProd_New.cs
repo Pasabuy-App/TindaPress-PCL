@@ -4,6 +4,8 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Net.Http;
 using TindaPress.Product.Struct;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace TindaPress.Product
 {
@@ -20,9 +22,10 @@ namespace TindaPress.Product
         public string price;
         public int order;
 
-    }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                      
     public class FilProd_New
     {
+
         public string Bars()
         {
             Options var1 = new Options();
@@ -75,24 +78,38 @@ namespace TindaPress.Product
         }
         #endregion
         #region Methods
-        public async void GetData(string val1, Action<bool, string> callback)
+        public async void GetData(string wpid, string snky, string img, Action<bool, string> callback)
         {
-            var dict = new Dictionary<string, string>();
-                dict.Add("val1", val1);
-            var content = new FormUrlEncodedContent(dict);
+            //var dict = new Dictionary<string, string>();
+            //    dict.Add("val1", val1);
+            //var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/datavice/test/demoguy", content);
+            // we need to send a request with multipart/form-data
+            var multiForm = new MultipartFormDataContent();
+
+            // add API method parameters
+            multiForm.Add(new StringContent(wpid), "wpid");
+            multiForm.Add(new StringContent(snky), "snky");
+
+            // add file and directly upload it
+            FileStream fs = File.OpenRead(img);
+            multiForm.Add(new StreamContent(fs), "img", Path.GetFileName(img));
+            //Path.GetFullPath
+            //callback(true, Path.GetFullPath(img));
+
+            //var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/datavice/test/demoguy", content);
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/datavice/v1/process/upload", multiForm);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
             {
                 string result = await response.Content.ReadAsStringAsync();
-                callback(true, result);
-                //Token token = JsonConvert.DeserializeObject<Token>(result);
+                //callback(true, result);
+                Token token = JsonConvert.DeserializeObject<Token>(result);
 
-                //bool success = token.status == "success" ? true : false;
-                //string data = token.status == "success" ? result : token.message;
-                //callback(success, data);
+                bool success = token.status == "success" ? true : false;
+                string data = token.status == "success" ? result : token.message;
+                callback(success, data);
             }
             else
             {

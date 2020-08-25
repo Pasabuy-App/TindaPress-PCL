@@ -35,16 +35,26 @@ namespace TindaPress.Variants
         }
         #endregion
         #region Methods
-        public async void Variant(string wp_id, string session_key, string variant_id, string product_id, string key, string value, string child_key, Action<bool, string> callback)
+        public async void Variant(string wp_id, string session_key, string variant_id, string product_id, string baseprice, string price, string name, string info, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
             dict.Add("wpid", wp_id);
             dict.Add("snky", session_key);
             dict.Add("vid", variant_id);
             dict.Add("pdid", product_id);
-            dict.Add("key", key);
-            dict.Add("val", value);
-            dict.Add("ckey", child_key);
+            if (baseprice != "")
+            {
+                dict.Add("baseprice", baseprice);
+            }
+            if (price != "")
+            {
+                dict.Add("price", price);
+            }
+            dict.Add("name", name);
+            if (info != "")
+            {
+                dict.Add("info", info);
+            }
             var content = new FormUrlEncodedContent(dict);
 
             var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/variants/update", content);

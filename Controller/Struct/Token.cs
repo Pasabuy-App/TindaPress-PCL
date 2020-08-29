@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TindaPress.Product.Struct
+namespace TindaPress.Controller.Struct
 {
     public class Token
     {

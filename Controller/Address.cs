@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using System.Net.Http;
-using TindaPress.Product.Struct;
+using TindaPress.Controller.Struct;
 
 
 namespace TindaPress.Address

@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 using System.Net.Http;
-using TindaPress.Controller.Struct;
+using TindaPress.Model;
 
-namespace TindaPress.Controller
+namespace TindaPress
 {
     public class Contact
     {
         #region Fields
         /// <summary>
-        /// Instance of  Contact Class with activate, delete, insert, listing and update method.
+        /// Instance of  Contact Class with activate, delete, insert, list and update method.
         /// </summary>
         private static Contact instance;
         public static Contact Instance
@@ -40,13 +39,13 @@ namespace TindaPress.Controller
         public async void Activate(string wp_id, string session_key, string stid, string cid, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("stid", stid);
-            dict.Add("cid", cid);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("stid", stid);
+                dict.Add("cid", cid);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/stores/contacts/activate", content);
+            var response = await client.PostAsync(TPHost.Instance.BaseDomain + "/tindapress/v1/stores/contacts/activate", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -69,13 +68,13 @@ namespace TindaPress.Controller
         public async void Delete(string wp_id, string session_key, string stid, string cid, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("stid", stid);
-            dict.Add("cid", cid);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("stid", stid);
+                dict.Add("cid", cid);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/stores/contacts/delete", content);
+            var response = await client.PostAsync(TPHost.Instance.BaseDomain + "/tindapress/v1/stores/contacts/delete", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -98,14 +97,14 @@ namespace TindaPress.Controller
         public async void Insert(string wp_id, string session_key, string stid, string phone, string email, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("stid", stid);
-            dict.Add("phone", phone);
-            dict.Add("email", email);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("stid", stid);
+                dict.Add("phone", phone);
+                dict.Add("email", email);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/stores/contacts/insert", content);
+            var response = await client.PostAsync(TPHost.Instance.BaseDomain + "/tindapress/v1/stores/contacts/insert", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -124,19 +123,19 @@ namespace TindaPress.Controller
         }
         #endregion
 
-        #region Listing Method
-        public async void Listing(string wp_id, string session_key, string stid, string type, string cid, string status, Action<bool, string> callback)
+        #region List Method
+        public async void List(string wp_id, string session_key, string stid, string type, string cid, string status, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("stid", stid);
-            if (type != "") { dict.Add("type", type); }
-            if (cid != "") { dict.Add("cid", cid); }
-            if (status != "") { dict.Add("status", status); }
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("stid", stid);
+                if (type != "") { dict.Add("type", type); }
+                if (cid != "") { dict.Add("cid", cid); }
+                if (status != "") { dict.Add("status", status); }
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/stores/contacts/list", content);
+            var response = await client.PostAsync(TPHost.Instance.BaseDomain + "/tindapress/v1/stores/contacts/list", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -159,15 +158,15 @@ namespace TindaPress.Controller
         public async void Update(string wp_id, string session_key, string stid, string cid, string type, string val, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("stid", stid);
-            dict.Add("cid", cid);
-            dict.Add("type", type);
-            dict.Add("val", val);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("stid", stid);
+                dict.Add("cid", cid);
+                dict.Add("type", type);
+                dict.Add("val", val);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/stores/contacts/update", content);
+            var response = await client.PostAsync(TPHost.Instance.BaseDomain + "/tindapress/v1/stores/contacts/update", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

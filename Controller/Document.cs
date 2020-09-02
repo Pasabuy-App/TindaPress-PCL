@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 using System.Net.Http;
-using TindaPress.Controller.Struct;
+using TindaPress.Model;
 using System.IO;
 
-namespace TindaPress.Controller
+namespace TindaPress
 {
     public class Document
     {
         #region Fields
         /// <summary>
-        /// Instance of Documents Class with approve, delete, insert, listing and update metohd.
+        /// Instance of Documents Class with approve, delete, insert, list and update metohd.
         /// </summary>
         private static Document instance;
         public static Document Instance
@@ -41,13 +40,13 @@ namespace TindaPress.Controller
         public async void Approve(string wp_id, string session_key, string stid, string doc_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("stid", stid);
-            dict.Add("doc_id", doc_id);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("stid", stid);
+                dict.Add("doc_id", doc_id);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/documents/approve", content);
+            var response = await client.PostAsync(TPHost.Instance.BaseDomain + "/tindapress/v1/documents/approve", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -70,13 +69,13 @@ namespace TindaPress.Controller
         public async void Delete(string wp_id, string session_key, string stid, string doc_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("stid", stid);
-            dict.Add("doc_id", doc_id);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("stid", stid);
+                dict.Add("doc_id", doc_id);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/documents/delete", content);
+            var response = await client.PostAsync(TPHost.Instance.BaseDomain + "/tindapress/v1/documents/delete", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -107,7 +106,7 @@ namespace TindaPress.Controller
             FileStream fs = File.OpenRead(img);
             multiForm.Add(new StreamContent(fs), "img", Path.GetFileName(img));
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/stores/documents/insert", multiForm);
+            var response = await client.PostAsync(TPHost.Instance.BaseDomain + "/tindapress/v1/stores/documents/insert", multiForm);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -126,19 +125,19 @@ namespace TindaPress.Controller
         }
         #endregion
 
-        #region Listing Method
-        public async void Listing(string wp_id, string session_key, string stid, string doc_id, string doc_type, string status, Action<bool, string> callback)
+        #region List Method
+        public async void List(string wp_id, string session_key, string stid, string doc_id, string doc_type, string status, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("stid", stid);
-            dict.Add("doc_id", doc_id);
-            dict.Add("doc_type", doc_type);
-            dict.Add("status", status);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("stid", stid);
+                dict.Add("doc_id", doc_id);
+                dict.Add("doc_type", doc_type);
+                dict.Add("status", status);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/documents/listing", content);
+            var response = await client.PostAsync(TPHost.Instance.BaseDomain + "/tindapress/v1/documents/listing", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -170,7 +169,7 @@ namespace TindaPress.Controller
             FileStream fs = File.OpenRead(img);
             multiForm.Add(new StreamContent(fs), "img", Path.GetFileName(img));
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/tindapress/v1/documents/update", multiForm);
+            var response = await client.PostAsync(TPHost.Instance.BaseDomain + "/tindapress/v1/documents/update", multiForm);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

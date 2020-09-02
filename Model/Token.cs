@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TindaPress.Controller.Struct
+﻿namespace TindaPress.Model
 {
     public class Token
     {
